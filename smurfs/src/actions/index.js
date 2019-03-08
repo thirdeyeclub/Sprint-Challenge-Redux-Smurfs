@@ -21,20 +21,20 @@ export const ADD_SMURFS_FAILURE = 'ADD_SMURFS_FAILURE';
    D - deleteSmurf
 */
 
-export const fetchSmurf = () => dispatch =>{
+export const fetchSmurfs = () => dispatch =>{
   console.log('Fetching the Viliage.');
-  dispatch({FETCHING_SMURFS})
+  dispatch({type: FETCHING_SMURFS})
   ;axios.get(`http://localhost:3333/smurfs`).then(res=>console.log(res),dispatch(
-    {FETCHING_SMURFS_SUCCESS,
-    payload: res.data,}
-  )).catch(err => console.log(err) ,dispatch(ADD_SMURFS_FAILURE))
+    {type: FETCHING_SMURFS_SUCCESS}
+  )).catch(err => console.log(err) ,dispatch({type: ADD_SMURFS_FAILURE}))
 }
 
-export const addSmurf = smurf = dispatch =>{
-  dispatch(ADD_SMURFS)
-  ;axios.then(res=>console.log(res),dispatch({
-    ADD_SMURFS_SUCCESS,
+export const addSmurf = () => dispatch =>{
+  console.log('here it comes')
+  dispatch({type: ADD_SMURFS})
+  ;axios.post('http://localhost:3333/smurfs').then(res=>dispatch({
+    type: ADD_SMURFS_SUCCESS,
     payload: res.data}))
-    .catch(err =>dispatch({ADD_SMURFS_FAILURE, payload: err}))
+    .catch(err =>dispatch({type: ADD_SMURFS_FAILURE, payload: err}))
 }
 
