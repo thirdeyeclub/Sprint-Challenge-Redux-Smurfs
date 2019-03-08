@@ -3,11 +3,11 @@ import axios from 'axios';
   Action Types Go Here!
   Be sure to export each action type so you can pull it into your reducer
 */
-export const FETCHING_SMURFS         = 'FETCHING_SMURFS';
+export const FETCHING_SMURFS = 'FETCHING_SMURFS';
 export const FETCHING_SMURFS_SUCCESS = 'FETCHING_SMURFS_SUCCESS';
 export const FETCHING_SMURFS_FAILURE = 'FETCHING_SMURFS_FAILURE';
 
-export const ADD_SMURFS         = 'ADD_SMURFS';
+export const ADD_SMURFS = 'ADD_SMURFS';
 export const ADD_SMURFS_SUCCESS = 'ADD_SMURFS_SUCCESS';
 export const ADD_SMURFS_FAILURE = 'ADD_SMURFS_FAILURE';
 /*
@@ -23,18 +23,25 @@ export const ADD_SMURFS_FAILURE = 'ADD_SMURFS_FAILURE';
 
 export const fetchSmurfs = () => dispatch =>{
   console.log('Fetching the Viliage.');
-  dispatch({type: FETCHING_SMURFS})
-  ;axios.get(`http://localhost:3333/smurfs`).then(res=>console.log(res),dispatch(
-    {type: FETCHING_SMURFS_SUCCESS}
+  dispatch({type: FETCHING_SMURFS});
+  axios.get(`http://localhost:3333/smurfs`)
+  .then( response =>dispatch(
+    {type: FETCHING_SMURFS_SUCCESS,
+    payload: response.data}
   )).catch(err => console.log(err) ,dispatch({type: ADD_SMURFS_FAILURE}))
 }
 
-export const addSmurf = () => dispatch =>{
-  console.log('here it comes')
-  dispatch({type: ADD_SMURFS})
-  ;axios.post('http://localhost:3333/smurfs').then(res=>dispatch({
-    type: ADD_SMURFS_SUCCESS,
-    payload: res.data}))
-    .catch(err =>dispatch({type: ADD_SMURFS_FAILURE, payload: err}))
-}
+export const addSmurf = smurf => dispatch => {
+  dispatch({ type: ADD_SMURFS });
+  axios
+    .post("http://localhost:3333/smurfs", smurf)
+    .then(response => {
+      console.log(response);
+      dispatch({
+        type: ADD_SMURFS_SUCCESS,
+        payload: response.data
+      });
+    })
+    .catch(err => dispatch({ type: ADD_SMURFS_FAILURE, payload: err }));
+};
 
